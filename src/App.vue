@@ -1,28 +1,46 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<div>
+<div @click="onClick">
+  this is app message: {{message}}
+</div>
+<Layout>
+
+<!-- pass data from Layout where we define slot as a property -->
+<div slot="header" slot-scope="row">
+  <Header :param="row"></Header>
+</div>
+
+<!-- pass data from Layout where we define slot inside -->
+<!-- <Header slot="header" slot-scope="row">{{row}}</Header> --> 
+
+<h1 slot="content" slot-scope="content">this is content</h1>
+
+</Layout>
+<slot name="footer"></slot>
+</div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Vue from "vue"
+import Component from "vue-class-component"
+import { Prop } from 'vue-property-decorator'
+import Layout from "./Layout"
+import Header from "./Header"
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
+@Component({  
+  components: {Layout, Header},
+  props:{
+    initialMessage:{}
+  }  
+})
+export default class App extends Vue{  
+  constructor(){
+    super();
+    this.message = this.initialMessage;
+  }  
+  onClick(){
+    
+    this.message = "goodbye!";
   }
+
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
